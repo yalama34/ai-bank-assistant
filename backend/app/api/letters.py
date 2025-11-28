@@ -1,6 +1,7 @@
-from typing import Any
+from typing import Any, List
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..core.database import get_db
@@ -86,6 +87,27 @@ async def create_letter(
 
 
 @router.get(
+    "/",
+    response_model=List[LetterResponse],
+)
+async def get_letters(
+    db: AsyncSession = Depends(get_db),
+) -> Any:
+    """
+    Получение всех писем.
+    """
+    from sqlalchemy.orm import selectinload
+    
+    result = await db.execute(
+        select(Letter)
+        .options(selectinload(Letter.drafts), selectinload(Letter.approvals))
+        .order_by(Letter.received_at.desc())
+    )
+    letters = result.scalars().all()
+    return [LetterResponse.model_validate(letter) for letter in letters]
+
+
+@router.get(
     "/{letter_id}",
     response_model=LetterResponse,
 )
@@ -96,7 +118,14 @@ async def get_letter(
     """
     Получение письма по ID.
     """
-    letter = await db.get(Letter, letter_id)
+    from sqlalchemy.orm import selectinload
+    
+    result = await db.execute(
+        select(Letter)
+        .options(selectinload(Letter.drafts), selectinload(Letter.approvals))
+        .where(Letter.id == letter_id)
+    )
+    letter = result.scalar_one_or_none()
     if not letter:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

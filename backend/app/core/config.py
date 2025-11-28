@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     # SBERT for embeddings
     EMBEDDING_MODEL: str = getenv("EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
 
+    # API Security
+    API_KEY: SecretStr = SecretStr(getenv("API_KEY", ""))
+
     def get_qwen_model(self) -> str:
         """Возвращает полный путь к модели Qwen."""
         return f"gpt://{self.YACLoud_FOLDER_ID}/qwen3-235b-a22b-fp8/latest"
