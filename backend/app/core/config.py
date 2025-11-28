@@ -2,7 +2,7 @@ from functools import lru_cache
 from os import getenv
 
 from dotenv import load_dotenv
-from pydantic import SecretStr
+from pydantic import SecretStr, PostgresDsn
 from pydantic_settings import BaseSettings
 
 
@@ -29,12 +29,21 @@ class Settings(BaseSettings):
     # SBERT for embeddings
     EMBEDDING_MODEL: str = getenv("EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
 
-    # API Security
-    API_KEY: SecretStr = SecretStr(getenv("API_KEY", ""))
-
     def get_qwen_model(self) -> str:
         """Возвращает полный путь к модели Qwen."""
         return f"gpt://{self.YACLoud_FOLDER_ID}/qwen3-235b-a22b-fp8/latest"
+
+    def build_database_url(self) -> str | PostgresDsn:
+        if self.database_url:
+            return self.database_url
+        return PostgresDsn.build(
+            scheme="postgresql+asyncpg",
+            username=self.database_user,
+            password=self.database_password.get_secret_value(),
+            host=self.database_host,
+            port=self.database_port,
+            path=f"/{self.database_db}",
+        )
 
 
 @lru_cache
