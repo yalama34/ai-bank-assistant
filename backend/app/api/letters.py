@@ -3,12 +3,12 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_db
-from app.core.security import verify_api_key
-from app.models.letter import Letter
-from app.schemas.letter import LetterCreate, LetterResponse
-from app.schemas.processing_params import ProcessingParams
-from app.services.analysis import AnalysisService
+from ..core.database import get_db
+from ..core.security import verify_api_key
+from ..models.letter import Letter
+from ..schemas.letter import LetterCreate, LetterResponse
+from ..schemas.processing_params import ProcessingParams
+from ..services.analysis import AnalysisService
 
 router = APIRouter(
     prefix="/letters",

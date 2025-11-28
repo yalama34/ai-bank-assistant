@@ -3,12 +3,12 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_db
-from app.core.security import verify_api_key
-from app.models.draft import Draft
-from app.models.letter import Letter
-from app.schemas.validation import ValidationResult
-from app.services.validation import ValidationService
+from ..core.database import get_db
+from ..core.security import verify_api_key
+from ..models.draft import Draft
+from ..models.letter import Letter
+from ..schemas.validation import ValidationResult
+from ..services.validation import ValidationService
 
 router = APIRouter(
     prefix="/validation",

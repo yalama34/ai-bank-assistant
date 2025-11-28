@@ -4,13 +4,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_db
-from app.core.security import verify_api_key
-from app.models.approval import Approval
-from app.models.draft import Draft
-from app.models.letter import Letter
-from app.schemas.processing_params import ProcessingParams
-from app.services.routing import RoutingService
+from ..core.database import get_db
+from ..core.security import verify_api_key
+from ..models.approval import Approval
+from ..models.draft import Draft
+from ..models.letter import Letter
+from ..schemas.processing_params import ProcessingParams
+from ..services.routing import RoutingService
 
 router = APIRouter(
     prefix="/approval",

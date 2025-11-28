@@ -4,13 +4,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_db
-from app.core.security import verify_api_key
-from app.models.correspondence_history import CorrespondenceHistory
-from app.models.draft import Draft
-from app.models.letter import Letter
-from app.schemas.processing_params import ProcessingParams
-from app.services.generation import GenerationService
+from ..core.database import get_db
+from ..core.security import verify_api_key
+from ..models.correspondence_history import CorrespondenceHistory
+from ..models.draft import Draft
+from ..models.letter import Letter
+from ..schemas.processing_params import ProcessingParams
+from ..services.generation import GenerationService
 
 router = APIRouter(
     prefix="/generation",
@@ -67,4 +67,3 @@ async def generate_response(
     await db.refresh(draft)
 
     return draft
-
