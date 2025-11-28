@@ -3,15 +3,12 @@ from os import getenv
 
 from dotenv import load_dotenv
 from pydantic import PostgresDsn, SecretStr
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
 load_dotenv()
 
 class Settings(BaseSettings):
-
-    model_config = SettingsConfigDict(extra="ignore")
-
     database_url: str | None = getenv("DATABASE_URL")
     database_host: str = getenv("DATABASE_HOST")
     database_port: int = getenv("DATABASE_PORT")
