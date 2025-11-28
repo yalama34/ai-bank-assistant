@@ -32,3 +32,11 @@ class Settings(BaseSettings):
     def get_qwen_model(self) -> str:
         """Возвращает полный путь к модели Qwen."""
         return f"gpt://{self.YACLoud_FOLDER_ID}/qwen3-235b-a22b-fp8/latest"
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
+
+
+settings = get_settings()

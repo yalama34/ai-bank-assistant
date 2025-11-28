@@ -5,7 +5,7 @@ from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, JSON, Enum
 from sqlalchemy.orm import Mapped, mapped_column
 import enum
 
-from app.models.base import Base
+from ..models.base import Base
 
 
 class CorrespondenceDirection(str, enum.Enum):

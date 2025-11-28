@@ -5,10 +5,10 @@ from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, JSON, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from app.models.base import Base
+from ..models.base import Base
 
 if TYPE_CHECKING:
-    from app.models.letter import Letter
+    from ..models.letter import Letter
 
 
 class DraftStatus(str, enum.Enum):
