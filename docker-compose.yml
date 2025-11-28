@@ -46,6 +46,21 @@ services:
       - qdrant_data:/qdrant/storage
     restart: unless-stopped
 
+  frontend:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+
 volumes:
   postgres_data:
   qdrant_data:
