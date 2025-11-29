@@ -14,7 +14,7 @@ class ApiClient {
       },
     });
 
-    // Добавляем API ключ в заголовки
+    // Добавляем API ключ в заголовки (если указан)
     if (API_KEY) {
       this.client.defaults.headers.common['X-API-Key'] = API_KEY;
     }
@@ -42,4 +42,3 @@ class ApiClient {
 
 export const apiClient = new ApiClient();
 export default apiClient.instance;
-
