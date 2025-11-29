@@ -40,9 +40,8 @@ class QwenClient:
         resp = self._client.responses.create(
             model=self.model,
             temperature=t,
-            max_tokens=mt,
             instructions=system_prompt,
-            input=[{"role": "user", "content": user_prompt}],
+            input=user_prompt,
             store=False,
         )
 

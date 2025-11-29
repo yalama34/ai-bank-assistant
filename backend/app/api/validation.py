@@ -1,8 +1,6 @@
 from typing import Any
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from ..core.database import get_db
 from ..core.security import verify_api_key
 from ..models.draft import Draft

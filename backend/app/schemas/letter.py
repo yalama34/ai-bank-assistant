@@ -5,10 +5,10 @@ from pydantic import BaseModel, Field, ConfigDict
 
 class LetterCreate(BaseModel):
     """Схема для создания нового письма"""
-    subject: str = Field(..., description="Тема письма", max_length=500)
+    subject: Optional[str] = Field(..., description="Тема письма", max_length=500)
     content: str = Field(..., description="Содержание письма")
-    sender: str = Field(..., description="Отправитель", max_length=255)
-    sender_email: str = Field(..., description="Email отправителя", max_length=255)
+    sender: Optional[str] = Field(..., description="Отправитель", max_length=255)
+    sender_email: Optional[str] = Field(..., description="Email отправителя", max_length=255)
     client_id: Optional[int] = Field(None, description="ID клиента")
     correspondence_thread_id: Optional[int] = Field(None, description="ID цепочки переписки")
 

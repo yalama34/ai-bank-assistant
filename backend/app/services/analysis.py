@@ -38,16 +38,26 @@ class AnalysisService:
 Проанализируй письмо клиента и верни JSON с параметрами обработки.
 
 Поля JSON:
-- request_category
-- urgency
-- formality_level
-- approval_departments (список строк)
-- legal_risks
+- request_category (допустимые значения:
+проблемы с платежами; вопросы по кредитам или ипотеке; партнёрство; жалобы; сигналы о мошенничестве; операционные запросы; спам; другое)
+- urgency (допустимые значения:
+low, standart, high, critical)
+- client_type (допустимые значения:
+retail, SME, corporate, internal, private_banking)
+- document_type (допустимые значения:
+free_form_letter, application, claim, contract, other_doc)
+- formality_level (допустимые значения:
+strict_official, corporate, client_oriented, brief) Устанавливается при учёте всех вышеперечисленных параметров
+- approval_departments (список строк) (допустимые значения:
+lawyers, compliance, risk, infosec, product_owner, operations, finance, sales)
+- legal_risks (допустимые значения:
+low, potential, high)  
 - operation_amount (число или null)
-- client_type
-- document_type
-- change_type
-- geography
+- change_type (допустимые значения:
+tariff_change, limit_change, data_update, contract_terms, service_activation, no_change)
+- geography (допустимые значения: место проживания на русском языке)
+- human_presence_needed (допустимые значения:
+no, recommended, review,  mandatory) Единственное поле, где нельзя ставить null при отстутствии информации. Высчитывается на основе всех вышеперечисленных параметров 
 
 Если информации для какого‑то поля недостаточно, ставь null или пустой список.
 
@@ -70,6 +80,7 @@ class AnalysisService:
         return {
             "processing_params": params,
             "request_category": params.get("request_category"),
+            "formality_level": params.get("formality_level"),
             "similar_precedents": similar,
         }
 

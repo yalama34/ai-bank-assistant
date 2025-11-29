@@ -47,44 +47,21 @@ async def create_letter(
     await db.commit()
     await db.refresh(letter)
 
-    analysis_service = AnalysisService(db=db)
-    analysis_result = await analysis_service.analyze_letter(letter_content=letter.content)
+    analysis_service = AnalysisService()
+    analysis_result = await analysis_service.analyze_letter(letter.content)
+    processing_params = analysis_result["processing_params"]
+    request_category = processing_params["request_category"]
+    formality_level = processing_params["formality_level"]
+    similar = processing_params["similar_precedents"]
 
-    
-    
-    if hasattr(analysis_result, "processing_params"):
-        processing_params_data = analysis_result.processing_params
-    elif isinstance(analysis_result, dict):
-        processing_params_data = analysis_result.get("processing_params")
-    else:
-        processing_params_data = None
-
-    if hasattr(analysis_result, "request_category"):
-        request_category = analysis_result.request_category
-    elif isinstance(analysis_result, dict):
-        request_category = analysis_result.get("request_category")
-    else:
-        request_category = None
-
-    
-    if processing_params_data:
-        if isinstance(processing_params_data, dict):
-            letter.processing_params = processing_params_data
-        else:
-            # Если это Pydantic модель, преобразуем в dict
-            letter.processing_params = ProcessingParams.model_validate(
-                processing_params_data
-            ).model_dump()
-
-    if request_category:
-        letter.request_category = request_category
+    letter.processing_params = processing_params
+    letter.request_category = request_category
 
     db.add(letter)
     await db.commit()
     await db.refresh(letter)
 
     return LetterResponse.model_validate(letter)
-
 
 @router.get(
     "/",

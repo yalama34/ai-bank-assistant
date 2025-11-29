@@ -3,6 +3,7 @@ from typing import Optional, Dict, Any, List
 from app.services.llm_client import QwenClient
 from app.services.vector_db import VectorDBService
 from app.services.system_prompts import GenerationPrompts
+from app.utils.run_parser import run_parser
 
 
 class GenerationService:
@@ -18,10 +19,10 @@ class GenerationService:
         self,
         letter_text: str,
         style: GenerationPrompts,
-        extra_context: str = "",
+        extra_context: dict[str, Any],
         filters: Optional[Dict[str, Any]] = None,
         k: int = 3,
-    ) -> str:
+    ) -> dict[str, Any]:
         """
         Генерация ответа.
 
@@ -62,4 +63,7 @@ class GenerationService:
 
         user_prompt = "\n".join(user_parts)
 
-        return await self.qwen.generate(system_prompt, user_prompt)
+        return {
+            "answer": await self.qwen.generate(system_prompt, user_prompt),
+            "style": style
+        }
