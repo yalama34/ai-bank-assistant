@@ -1,10 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import Layout from './components/Layout';
-import Dashboard from './pages/Dashboard';
-import LetterDetails from './pages/LetterDetails';
-import Approvals from './pages/Approvals';
-import Analytics from './pages/Analytics';
+import LetterProcessor from './pages/LetterProcessor';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,19 +13,11 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/letters/:id" element={<LetterDetails />} />
-            <Route path="/approvals" element={<Approvals />} />
-            <Route path="/analytics" element={<Analytics />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <div className="min-h-screen bg-gray-50">
+        <LetterProcessor />
+      </div>
     </QueryClientProvider>
   );
 }
 
 export default App;
-

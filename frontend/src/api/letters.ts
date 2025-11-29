@@ -1,23 +1,12 @@
 import api from './client';
-import type { Letter, LetterCreate, LetterResponse } from '@/types';
+import type { LetterResponse } from '@/types';
 
-export const lettersApi = {
-  // Создать письмо
-  create: async (data: LetterCreate): Promise<LetterResponse> => {
-    const response = await api.post<LetterResponse>('/letters/', data);
-    return response.data;
-  },
+export interface LetterInput {
+  content: string;
+  subject?: string;
+}
 
-  // Получить письмо по ID
-  getById: async (id: number): Promise<LetterResponse> => {
-    const response = await api.get<LetterResponse>(`/letters/${id}`);
-    return response.data;
-  },
-
-  // Получить все письма
-  getAll: async (): Promise<LetterResponse[]> => {
-    const response = await api.get<LetterResponse[]>('/letters/');
-    return response.data;
-  },
+export const processLetter = async (data: LetterInput): Promise<LetterResponse> => {
+  const response = await api.post<LetterResponse>('/api/letters/process', data);
+  return response.data;
 };
-
